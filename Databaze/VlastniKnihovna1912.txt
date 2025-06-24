@@ -1,0 +1,135 @@
+CREATE TABLE Kniha (
+    ID INTEGER,
+    Nazev VARCHAR(45),
+    RokVydani INTEGER,
+    ISBN VARCHAR(45),
+    PocetStran VARCHAR(45),
+    Jazyk VARCHAR(45)
+);
+
+CREATE TABLE Zanry (
+    ID INTEGER,
+    Druh VARCHAR(45)
+);
+
+CREATE TABLE Kniha_has_Zanry (
+    Kniha_ID INTEGER,
+    Zanry_ID INTEGER
+);
+
+CREATE TABLE Spisovatel (
+    ID INTEGER,
+    Jmeno VARCHAR(45),
+    Prijmeni VARCHAR(45)
+);
+
+CREATE TABLE Spisovatel_has_Kniha (
+    Spisovatel_ID INTEGER,
+    Kniha_ID INTEGER
+);
+
+CREATE TABLE Ctenar (
+    ID INTEGER,
+    Jmeno VARCHAR(45),
+    Prijmeni VARCHAR(45),
+    Vek INTEGER
+);
+
+CREATE TABLE KategorieCtenaru (
+    ID INTEGER,
+    Dospely VARCHAR(45),
+    Student VARCHAR(45),
+    Dite VARCHAR(45)
+);
+
+CREATE TABLE Vypujceni (
+    ID INTEGER,
+    DatumVypujceni DATE,
+    DatumVraceni DATE,
+    Kniha_ID INTEGER,
+    Ctenar_ID INTEGER
+);
+
+CREATE TABLE RezervaceKnih (
+    ID INTEGER,
+    DatumRezervace DATE,
+    DatumVyprseniRezervace DATE,
+    Ctenar_ID INTEGER,
+    Kniha_ID INTEGER
+);
+
+INSERT INTO Kniha (ID, Nazev, RokVydani, ISBN, PocetStran, Jazyk) VALUES
+(1, 'Pán prstenů', 1954, '978-0261103573', '1216', 'Český'),
+(2, 'Harry Potter a Kámen mudrců', 1997, '978-0747532743', '336', 'Český'),
+(3, '1984', 1949, '978-0451524935', '328', 'Anglický');
+
+INSERT INTO Zanry (ID, Druh) VALUES
+(1, 'Fantasy'),
+(2, 'Sci-Fi'),
+(3, 'Dystopie');
+
+INSERT INTO Kniha_has_Zanry (Kniha_ID, Zanry_ID) VALUES
+(1, 1),
+(2, 1),
+(3, 3);
+
+INSERT INTO Spisovatel (ID, Jmeno, Prijmeni) VALUES
+(1, 'J.R.R.', 'Tolkien'),
+(2, 'J.K.', 'Rowlingová'),
+(3, 'George', 'Orwell');
+
+INSERT INTO Spisovatel_has_Kniha (Spisovatel_ID, Kniha_ID) VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+INSERT INTO Ctenar (ID, Jmeno, Prijmeni, Vek) VALUES
+(1, 'Jan', 'Novák', 34),
+(2, 'Anna', 'Svobodová', 22),
+(3, 'Petr', 'Dvořák', 12);
+
+INSERT INTO KategorieCtenaru (ID, Dospely, Student, Dite) VALUES
+(1, 'Ano', 'Ne', 'Ne'),
+(2, 'Ne', 'Ano', 'Ne'),
+(3, 'Ne', 'Ne', 'Ano');
+
+INSERT INTO Vypujceni (ID, DatumVypujceni, DatumVraceni, Kniha_ID, Ctenar_ID) VALUES
+(1, '2024-01-10', '2024-01-20', 1, 1),
+(2, '2024-02-15', NULL, 2, 2);
+s
+INSERT INTO RezervaceKnih (ID, DatumRezervace, DatumVyprseniRezervace, Ctenar_ID, Kniha_ID) VALUES
+(1, '2024-01-05', '2024-01-12', 3, 3);
+
+-- Zobrazení všech knih
+SELECT * FROM Kniha; 
+
+-- Zobrazení všech žánrů
+SELECT * FROM Zanry; 
+
+-- Zobrazení všech čtenářů
+SELECT * FROM Ctenar; 
+
+-- Zobrazení názvů knih a jejich autorů
+SELECT Kniha.Nazev, Spisovatel.Jmeno, Spisovatel.Prijmeni 
+FROM Kniha 
+JOIN Spisovatel_has_Kniha ON Kniha.ID = Spisovatel_has_Kniha.Kniha_ID 
+JOIN Spisovatel ON Spisovatel.ID = Spisovatel_has_Kniha.Spisovatel_ID; 
+
+-- Zobrazení čtenářů a vypůjčených knih
+SELECT Ctenar.Jmeno, Ctenar.Prijmeni, Kniha.Nazev, Vypujceni.DatumVypujceni, Vypujceni.DatumVraceni 
+FROM Vypujceni 
+JOIN Ctenar ON Vypujceni.Ctenar_ID = Ctenar.ID 
+JOIN Kniha ON Vypujceni.Kniha_ID = Kniha.ID; 
+
+--Knihy a jejich žánry 
+SELECT Kniha.Nazev AS "Název knihy", Zanry.Druh AS "Žánr knihy"
+FROM Kniha, Kniha_has_Zanry, Zanry
+WHERE Kniha.ID = Kniha_has_Zanry.Kniha_ID 
+  AND Zanry.ID = Kniha_has_Zanry.Zanry_ID;
+
+--knihy a jejich autoři
+SELECT 
+    Spisovatel.Jmeno AS "Jméno spisovatele", Spisovatel.Prijmeni AS "Příjmení spisovatele", Kniha.Nazev AS "Název knihy"
+FROM Kniha, Spisovatel_has_Kniha, Spisovatel
+WHERE Kniha.ID = Spisovatel_has_Kniha.Kniha_ID 
+  AND Spisovatel.ID = Spisovatel_has_Kniha.Spisovatel_ID;

@@ -1,0 +1,51 @@
+CREATE table Vypujceni (ID INTEGER, datumVypujceni DATE, datumVraceni DATE, Kniha_IdKniha INTEGER, Ctenar_idCtenar INTEGER);
+CREATE TABLE Kniha (ID INTEGER , Nazev VARCHAR(45), RokVydani YEAR(2000), ISBN VARCHAR(45), PocetStran VARCHAR(45), Jazyk VARCHAR(45));
+CREATE TABLE zanry ( id INTEGER, Druh VARCHAR(45));
+CREATE TABLE Kniha_has_zanry (Kniha_idKniha INTEGER, zanry_idzanry INTEGER);
+CREATE TABLE Spisovatel (ID INTEGER, Jmeno VARCHAR(45), Prijmeni VARCHAR (45));
+CREATE TABLE Spisovatel_has_Kniha (Spisovatel_idSpisovatel INTEGER, Kniha_idKniha INTEGER);
+CREATE TABLE Ctenar (id INTEGER, Jmeno VARCHAR(45), Prijmeni Varchar(45), Vek INTEGER(25));
+CREATE TABLE kategorieCtenaru (idkategorieCtenaru INTEGER, dospely VARCHAR(45),student VARCHAR(45),dite VARCHAR(45));
+CREATE TABLE RezervaceKnih (IdRezervaceKnih INTEGER, DatumRezervace DATE, DatumVyprseniRezervace DATE, Ctenar_idCtenar INTEGER, Kniha_idKniha INTEGER);
+
+
+INSERT INTO Kniha (ID, Nazev, RokVydani, ISBN, PocetStran, Jazyk) VALUES
+(1, 'Pán prstenů', 1954, '978-0261103573', '1216', 'Český'),
+(2, 'Harry Potter a Kámen mudrců', 1997, '978-0747532743', '336', 'Český'),
+(3, '1984', 1949, '978-0451524935', '328', 'Anglický');
+
+
+INSERT INTO zanry (id, Druh) VALUES
+(1, 'Fantasy'),
+(2, 'Sci-Fi'),
+(3, 'Dystopie');
+
+
+INSERT INTO Spisovatel (ID, Jmeno, Prijmeni) VALUES
+(1, 'J.R.R.', 'Tolkien'),
+(2, 'J.K.', 'Rowlingová'),
+(3, 'George', 'Orwell');
+
+INSERT INTO Ctenar (id, Jmeno, Prijmeni, Vek) VALUES
+(1, 'Jan', 'Novák', 34),
+(2, 'Anna', 'Svobodová', 22),
+(3, 'Petr', 'Dvořák', 12);
+
+INSERT INTO kategorieCtenaru (idkategorieCtenaru, dospely, student, dite) VALUES
+(1, 'Ano', 'Ne', 'Ne'),
+(2, 'Ne', 'Ano', 'Ne'),
+(3, 'Ne', 'Ne', 'Ano');
+
+INSERT INTO Vypujceni (ID, datumVypujceni, datumVraceni, ID, Ctenar_idCtenar) VALUES
+(1, '2024-01-10', '2024-01-20', 1, 1),
+(2, '2024-02-15', NULL, 2, 2);
+
+INSERT INTO RezervaceKnih (IdRezervaceKnih, DatumRezervace, DatumVyprseniRezervace, Ctenar_idCtenar, Kniha_idKniha) VALUES
+(1, '2024-01-05', '2024-01-12', 3, 3);
+
+
+
+
+
+
+
